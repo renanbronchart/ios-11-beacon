@@ -18,6 +18,12 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
+    @IBAction func scannCode(_ sender: Any) {
+        if let response_view = self.storyboard?.instantiateViewController(withIdentifier: "responseView") as? ResponseViewController {
+            self.navigationController?.pushViewController(response_view, animated: true)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -31,6 +37,7 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
             startRanging()
         }
     }
+
     
     fileprivate func startRanging () {
         let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "F2A74FC4-7625-44DB-9B08-CB7E130B2029")!, major: 65535, minor: 382, identifier: "premier")

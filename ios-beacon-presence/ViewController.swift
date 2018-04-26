@@ -36,7 +36,8 @@ class ViewController: UIViewController {
             UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
             if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRCodeViewController {
                 
-                
+                emailField?.text = ""
+                passwordField?.text = ""
                 self.navigationController?.pushViewController(view_qr_code, animated: true)
             }
         }

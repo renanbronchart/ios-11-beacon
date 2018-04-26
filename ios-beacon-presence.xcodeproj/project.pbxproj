@@ -16,6 +16,7 @@
 		25D4F7832092622700FF6CF7 /* ios_beacon_presenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D4F7822092622700FF6CF7 /* ios_beacon_presenceUITests.swift */; };
 		25E5B4DB20926A1D00B4EBD5 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E5B4DA20926A1D00B4EBD5 /* QRCodeViewController.swift */; };
 		25E5B4DE20926AF200B4EBD5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E5B4DD20926AF200B4EBD5 /* MapKit.framework */; };
+		25E5B4E020927C5000B4EBD5 /* ResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		25D4F7842092622700FF6CF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25E5B4DA20926A1D00B4EBD5 /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		25E5B4DD20926AF200B4EBD5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				25D4F76B2092622700FF6CF7 /* LaunchScreen.storyboard */,
 				25D4F76E2092622700FF6CF7 /* Info.plist */,
 				25E5B4DA20926A1D00B4EBD5 /* QRCodeViewController.swift */,
+				25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */,
 			);
 			path = "ios-beacon-presence";
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25E5B4DB20926A1D00B4EBD5 /* QRCodeViewController.swift in Sources */,
+				25E5B4E020927C5000B4EBD5 /* ResponseViewController.swift in Sources */,
 				25D4F7652092622600FF6CF7 /* ViewController.swift in Sources */,
 				25D4F7632092622600FF6CF7 /* AppDelegate.swift in Sources */,
 			);
