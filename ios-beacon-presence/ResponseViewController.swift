@@ -51,27 +51,27 @@ class ResponseViewController: UIViewController {
         })
     }
     
-    func removeOverlay () {
-        self.overlayView?.removeFromSuperview()
-    }
-    
     func createOverlay() {
         overlayView = UIView(frame: self.view.bounds)
         let layer = overlayView.layer
-
+        
         layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
-
+        
         self.view.insertSubview(overlayView, belowSubview: alertView)
-
-        UIView.animate(withDuration: 0.1, animations: {
+        
+        UIView.animate(withDuration: 0.3, animations: {
             layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6).cgColor
-
+            
         })
+    }
+    
+    func removeOverlay () {
+        self.overlayView?.removeFromSuperview()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("loadappear--------------------------------------loadappear")
+
         self.navigationController?.isNavigationBarHidden = false
 
         // Do any additional setup after loading the view.
@@ -86,13 +86,12 @@ class ResponseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        initGradient()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
-        print("___________________________----------------------_________________________-------------------------_________________________")
-        print("yesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyesyes")
-        print("___________________________----------------------_________________________-------------------------_________________________")
         createOverlay()
-
-        print("appear--------------------------------------appear")
 
         if (success == false) {
             labelButton?.setTitle("Je rentente le coup", for: .normal)
@@ -115,6 +114,8 @@ class ResponseViewController: UIViewController {
         UIView.animate(withDuration: 0.4, animations: {
             self.alertView?.alpha = 1.0
         })
+        
+        
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
             self.animator = UIDynamicAnimator(referenceView: self.view)

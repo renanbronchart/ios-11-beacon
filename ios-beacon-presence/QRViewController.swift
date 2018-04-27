@@ -12,6 +12,7 @@
 // https://stackoverflow.com/questions/48576959/qr-code-scanner-wont-work-in-swift-4
 // Thanks : Ganesh Manickam *867*
 //
+
 import UIKit
 import AVFoundation
 import CoreLocation
@@ -28,6 +29,9 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
     
+    @IBOutlet weak var labelClassroom: UILabel!
+    @IBOutlet weak var logoutButton: DangerButton!
+    
     @IBAction func logout(_ sender: Any) {
         UserDefaults.standard.set(false, forKey: "USERLOGGEDIN")
         self.navigationController?.popToRootViewController(animated: true)
@@ -38,6 +42,10 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
             response_view.success = false
             self.navigationController?.pushViewController(response_view, animated: true)
         }
+    }
+    
+    @IBAction func scanQRCode(_ sender: Any) {
+        requestCode(success: true)
     }
     
     private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
@@ -53,6 +61,10 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
                                       AVMetadataObject.ObjectType.dataMatrix,
                                       AVMetadataObject.ObjectType.interleaved2of5,
                                       AVMetadataObject.ObjectType.qr]
+    
+    override func viewDidAppear(_ animated: Bool) {
+        initGradient()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +113,11 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         videoPreviewLayer?.frame = view.layer.bounds
+        
         view.layer.addSublayer(videoPreviewLayer!)
+        
+        // à voir...
+        view.bringSubview(toFront: labelClassroom)
         
         // Start video capture.
         captureSession.startRunning()
@@ -114,47 +130,9 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
             qrCodeFrameView.layer.borderWidth = 2
             view.addSubview(qrCodeFrameView)
             view.bringSubview(toFront: qrCodeFrameView)
+            view.bringSubview(toFront: logoutButton)
         }
     }
-    
-//    func requestUrl () {
-//        let session = URLSession.shared
-//        let u = URL(string: "http://www.perdu.com")
-//        var request = URLRequest(url: u!)
-//        request.httpMethod = "GET"
-//        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
-//        request.httpBody = "{\"Hello\" : \"Hello\"}".data(using: .utf8)
-//
-//        task = session.dataTask(with: request) {
-//            (data, response, error) in
-//            if let d = data {
-//                print(String(data: d, encoding: .utf8))
-//                if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
-//                    // print(o["test"])
-//                    print(o)
-//
-//                    let dataOut = try? JSONSerialization.data(withJSONObject: o, options: .prettyPrinted)
-//
-//                    // faire ici la requete avec entete de qr code + les beacons,
-//                    // envoyer la reponse et changer selon le resultat la valeur de response_view.success.
-//
-//
-//                    print("request_________________________________________________________")
-//                    print(dataOut)
-//                    print("dataOut_________________________________________________________")
-//                }
-//            }
-//
-//            print("merde")
-//            print(response ?? "")
-//            self.requestCode()
-//            print("__________________--------------")
-//            print(error ?? "")
-//        }
-//
-//        task?.resume()
-//    }
-    
     
 //
 //    "QRCodeData" : "OK",

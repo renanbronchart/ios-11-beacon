@@ -9,10 +9,20 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var emailField: UITextField!
+    
+    @IBOutlet weak var passwordField: UITextField!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        initGradient()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        
         
         if UserDefaults.standard.bool(forKey: "USERLOGGEDIN") == true {
             print("is already connected")
@@ -27,9 +37,7 @@ class ViewController: UIViewController {
         }
         
     }
-    @IBOutlet weak var emailField: UITextField!
-    
-    @IBOutlet weak var passwordField: UITextField!
+
     
     @IBAction func logIn(_ sender: Any) {
 //        let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -76,13 +84,15 @@ class ViewController: UIViewController {
         // À supprimer ensuite
         if (emailField?.text == "test" && passwordField?.text == "test") {
             UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
-            if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRCodeViewController {
+            if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRViewController {
                 
                 emailField?.text = ""
                 passwordField?.text = ""
                 self.navigationController?.pushViewController(view_qr_code, animated: true)
             }
         }
+        
+
     }
     
     override func didReceiveMemoryWarning() {
