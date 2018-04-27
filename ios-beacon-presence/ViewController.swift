@@ -10,20 +10,46 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
-    
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var buttonLabel: UIButton!
+    
+    var animator:UIDynamicAnimator?
+    var snap: UISnapBehavior!
+    var snapEmail: UISnapBehavior!
+    var snapPassword: UISnapBehavior!
+    var snapButton: UISnapBehavior!
+    let gravity = UIGravityBehavior()
+    let collider = UICollisionBehavior()
+    
+    var titleOriginX: CGFloat?
+    var titleOriginY: CGFloat?
     
     override func viewWillAppear(_ animated: Bool) {
         initGradient()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.animator = UIDynamicAnimator(referenceView: view)
+        self.snap = UISnapBehavior(item: titleLabel, snapTo: CGPoint(x: view.center.x, y: (view.center.y - (view.frame.height / 2) + 150)))
+        self.snapEmail = UISnapBehavior(item: emailField, snapTo: CGPoint(x: view.center.x, y: (view.center.y - (view.frame.height / 2) + 270)))
+        self.snapPassword = UISnapBehavior(item: passwordField, snapTo: CGPoint(x: view.center.x, y: (view.center.y - (view.frame.height / 2) + 350)))
+        self.snapButton = UISnapBehavior(item: buttonLabel, snapTo: CGPoint(x: view.center.x, y: (view.center.y - (view.frame.height / 2) + 480)))
+        self.animator?.addBehavior(self.snap)
+        self.animator?.addBehavior(self.snapEmail)
+        self.animator?.addBehavior(self.snapPassword)
+        self.animator?.addBehavior(self.snapButton)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
-        
+        let frmTitleLabel: CGRect = titleLabel.frame
+        titleOriginX = frmTitleLabel.origin.x
+        titleOriginY = frmTitleLabel.origin.y
+
         if UserDefaults.standard.bool(forKey: "USERLOGGEDIN") == true {
             print("is already connected")
             // user is already logged so navigate to home qr code
@@ -37,6 +63,29 @@ class ViewController: UIViewController {
         }
         
     }
+    
+    func deplaceLabel () {
+        animator = UIDynamicAnimator(referenceView: self.view)
+        
+        gravity.gravityDirection = CGVector(dx: 0, dy: 1.0)
+        animator?.addBehavior(gravity)
+        
+        gravity.addItem(titleLabel)
+        
+        gravity.addItem(passwordField)
+        
+        
+        //adding the collision behavior
+        
+        collider.addItem(titleLabel)
+        collider.addItem(emailField)
+        collider.addItem(passwordField)
+        collider.addItem(buttonLabel)
+        
+//        collider.translatesReferenceBoundsIntoBoundary = true
+        animator?.addBehavior(collider)
+    }
+
 
     
     @IBAction func logIn(_ sender: Any) {
@@ -85,14 +134,22 @@ class ViewController: UIViewController {
         if (emailField?.text == "test" && passwordField?.text == "test") {
             UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
             if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRViewController {
+                deplaceLabel()
                 
-                emailField?.text = ""
-                passwordField?.text = ""
-                self.navigationController?.pushViewController(view_qr_code, animated: true)
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                    self.emailField?.text = ""
+                    self.passwordField?.text = ""
+                    
+                    self.navigationController?.pushViewController(view_qr_code, animated: true)
+                })
             }
         }
         
 
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        animator?.removeAllBehaviors()
     }
     
     override func didReceiveMemoryWarning() {
