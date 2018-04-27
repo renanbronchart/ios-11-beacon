@@ -32,6 +32,48 @@ class ViewController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     
     @IBAction func logIn(_ sender: Any) {
+//        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+//        let session = URLSession.shared
+//        let u = URL(string: "0.0.0.0://api/login")
+//        var request = URLRequest(url: u!)
+//
+//        request.httpMethod = "POST"
+//        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
+//        request.httpBody = "{\"Email\": \"\(emailField.text ?? "")\", \"Password\": \"\(passwordField.text ?? "")\"}".data(using: .utf8)
+//
+//        let task = session.dataTask(with: request) {
+//            (data, response, error) in
+//            if let d = data {
+//                print(String(data: d, encoding: .utf8))
+//                if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
+//                    // print(o["test"])
+//                    print(o["token"])
+//                    if (o["token"] != nil) {
+//                        appDelegate?.token = o["token"]!
+//                    } else {
+//                        return
+//                    }
+//
+//                    let dataOut = try? JSONSerialization.data(withJSONObject: o, options: .prettyPrinted)
+//
+//                    print(dataOut)
+//
+//                    if let token {
+//                        UserDefaults.standard.set(true, forKey: token)
+//                        if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRCodeViewController {
+//
+//                            self.emailField?.text = ""
+//                            self.passwordField?.text = ""
+//                            self.navigationController?.pushViewController(view_qr_code, animated: true)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        task.resume()
+        
+        // À supprimer ensuite
         if (emailField?.text == "test" && passwordField?.text == "test") {
             UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
             if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRCodeViewController {

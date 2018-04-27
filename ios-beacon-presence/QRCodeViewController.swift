@@ -12,6 +12,11 @@ import CoreLocation
 class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
     
     let manager = CLLocationManager()
+    var beaconsFound : Array<Any>?
+    var task: URLSessionTask?
+    
+    
+    
     
     @IBAction func logout(_ sender: Any) {
         UserDefaults.standard.set(false, forKey: "USERLOGGEDIN")
@@ -19,7 +24,10 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func scannCode(_ sender: Any) {
+        requestUrl()
+        
         if let response_view = self.storyboard?.instantiateViewController(withIdentifier: "responseView") as? ResponseViewController {
+            response_view.success = false
             self.navigationController?.pushViewController(response_view, animated: true)
         }
     }
@@ -37,6 +45,42 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
             startRanging()
         }
     }
+    
+    func requestUrl () {
+        let session = URLSession.shared
+        let u = URL(string: "http://www.perdu.com")
+        var request = URLRequest(url: u!)
+        request.httpMethod = "GET"
+        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
+        request.httpBody = "{\"Hello\" : \"Hello\"}".data(using: .utf8)
+        
+        task = session.dataTask(with: request) {
+            (data, response, error) in
+            if let d = data {
+                print(String(data: d, encoding: .utf8))
+                if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
+                    // print(o["test"])
+                    print(o)
+                    
+                    let dataOut = try? JSONSerialization.data(withJSONObject: o, options: .prettyPrinted)
+                    
+                    // faire ici la requete avec entete de qr code + les beacons,
+                    // envoyer la reponse et changer selon le resultat la valeur de response_view.success.
+                    print("_________________________________________________________")
+                    print(dataOut)
+                    print("_________________________________________________________")
+                }
+            }
+            
+            print("merde")
+            print(response ?? "")
+            print("__________________--------------")
+            print(error ?? "")
+        }
+        
+        task?.resume()
+    }
+    
 
     
     fileprivate func startRanging () {
@@ -54,6 +98,9 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         print(region.identifier)
+        print(beacons)
+        
+        beaconsFound = beacons
         
         for b in beacons {
             print(b.minor)
@@ -65,6 +112,10 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             startRanging()
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // task?.cancel()
     }
     
 }
