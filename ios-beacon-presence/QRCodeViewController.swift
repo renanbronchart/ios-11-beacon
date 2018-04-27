@@ -8,14 +8,20 @@
 
 import UIKit
 import CoreLocation
+import AVFoundation
 
-class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
+class QRCodeViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMetadataOutputObjectsDelegate {
     
     let manager = CLLocationManager()
     var beaconsFound : Array<Any>?
     var task: URLSessionTask?
     
+    var captureSession: AVCaptureSession!
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer!
+    var isReading: Bool = false
     
+    @IBOutlet weak var scanView: UIView!
+    @IBOutlet weak var qrLabel: UILabel!
     
     
     @IBAction func logout(_ sender: Any) {
@@ -44,6 +50,61 @@ class QRCodeViewController: UIViewController, CLLocationManagerDelegate {
         } else {
             startRanging()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
+        
+        guard let captureDevice = deviceDiscoverySession.devices.first else {
+            print("KO : Pas de caméra.")
+            return
+        }
+        
+        do {
+            let deviceInput = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession?.addInput(deviceInput)
+            
+            let captureMetadataOutput = AVCaptureMetadataOutput()
+            captureSession?.addOutput(captureMetadataOutput)
+            
+            captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+            captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
+            
+            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
+            videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            videoPreviewLayer.frame = view.layer.bounds
+            view.layer.addSublayer(videoPreviewLayer!)
+            
+            captureSession.startRunning()
+            
+            view.bringSubview(toFront: qrLabel)
+        } catch {
+            print(error)
+            return
+        }
+        
+        func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+            // Check if the metadataObjects array is not nil and it contains at least one object.
+            if metadataObjects.count == 0 {
+                scanView?.frame = CGRect.zero
+                qrLabel.text = "Pas de QR code"
+                return
+            }
+            
+            // Get the metadata object.
+            let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+            
+            if metadataObj.type == AVMetadataObject.ObjectType.qr {
+                // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
+                let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
+                scanView?.frame = barCodeObject!.bounds
+                
+                if metadataObj.stringValue != nil {
+                    qrLabel.text = metadataObj.stringValue
+                }
+            }
+        }
+        
     }
     
     func requestUrl () {

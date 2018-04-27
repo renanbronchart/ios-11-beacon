@@ -86,22 +86,37 @@
                                     <action selector="logout:" destination="i1o-kW-H2B" eventType="touchUpInside" id="hOn-2y-CSM"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bTq-EM-5xv">
+                                <rect key="frame" x="16" y="205" width="343" height="319"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pas de QR code détecté" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYN-zf-OBd">
+                                        <rect key="frame" x="8" y="8" width="327" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izb-ty-NBG">
-                                <rect key="frame" x="133" y="487" width="108" height="30"/>
+                                <rect key="frame" x="133" y="569" width="108" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Scann QR Code"/>
-                                <connections>
-                                    <action selector="scannCode:" destination="i1o-kW-H2B" eventType="touchUpInside" id="xtU-IS-o5n"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kIk-af-YdR"/>
                     </view>
+                    <connections>
+                        <outlet property="qrLabel" destination="TYN-zf-OBd" id="W6G-PZ-k89"/>
+                        <outlet property="scanView" destination="bTq-EM-5xv" id="LqT-9h-Ezr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o1C-HU-VPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2135" y="-585"/>
+            <point key="canvasLocation" x="2133.5999999999999" y="-585.1574212893554"/>
         </scene>
         <!--Response View Controller-->
         <scene sceneID="rqR-zf-pDE">
