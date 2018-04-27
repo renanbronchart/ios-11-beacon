@@ -97,9 +97,6 @@
                                 <rect key="frame" x="111" y="558" width="153" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Scann QR Code"/>
-                                <connections>
-                                    <action selector="scannCode:" destination="i1o-kW-H2B" eventType="touchUpInside" id="0jP-kY-H4E"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -16,13 +16,15 @@ import UIKit
 import AVFoundation
 import CoreLocation
 
-class QRViewController: UIViewController, CLLocationManagerDelegate {
+class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMetadataOutputObjectsDelegate {
     let manager = CLLocationManager()
-    var beaconsFound : Array<Any>?
+    let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "F2A74FC4-7625-44DB-9B08-CB7E130B2029")!, identifier: "beacon-hetic")
+    var beaconsFound = [""]
     var task: URLSessionTask?
+    var firstTime = true
+    var QRString: String?
     
     var captureSession = AVCaptureSession()
-    
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
     
@@ -31,9 +33,7 @@ class QRViewController: UIViewController, CLLocationManagerDelegate {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    @IBAction func scannCode(_ sender: Any) {
-        requestUrl()
-        
+    func requestCode(success: Bool) {
         if let response_view = self.storyboard?.instantiateViewController(withIdentifier: "responseView") as? ResponseViewController {
             response_view.success = false
             self.navigationController?.pushViewController(response_view, animated: true)
@@ -106,13 +106,6 @@ class QRViewController: UIViewController, CLLocationManagerDelegate {
         // Start video capture.
         captureSession.startRunning()
         
-        // Move the message label and top bar to the front
-        //        view.bringSubview(toFront: messageLabel)
-        //        view.bringSubview(toFront: topbar)
-        //        print("__________________________________________")
-        //        print(messageLabel)
-        //        print("__________________________________________")
-        //
         // Initialize QR Code Frame to highlight the QR code
         qrCodeFrameView = UIView()
         
@@ -124,45 +117,96 @@ class QRViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+//    func requestUrl () {
+//        let session = URLSession.shared
+//        let u = URL(string: "http://www.perdu.com")
+//        var request = URLRequest(url: u!)
+//        request.httpMethod = "GET"
+//        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
+//        request.httpBody = "{\"Hello\" : \"Hello\"}".data(using: .utf8)
+//
+//        task = session.dataTask(with: request) {
+//            (data, response, error) in
+//            if let d = data {
+//                print(String(data: d, encoding: .utf8))
+//                if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
+//                    // print(o["test"])
+//                    print(o)
+//
+//                    let dataOut = try? JSONSerialization.data(withJSONObject: o, options: .prettyPrinted)
+//
+//                    // faire ici la requete avec entete de qr code + les beacons,
+//                    // envoyer la reponse et changer selon le resultat la valeur de response_view.success.
+//
+//
+//                    print("request_________________________________________________________")
+//                    print(dataOut)
+//                    print("dataOut_________________________________________________________")
+//                }
+//            }
+//
+//            print("merde")
+//            print(response ?? "")
+//            self.requestCode()
+//            print("__________________--------------")
+//            print(error ?? "")
+//        }
+//
+//        task?.resume()
+//    }
+    
+    
+//
+//    "QRCodeData" : "OK",
+//    "date": "",
+//    "beaconCollection":
+//    [
+//    12,
+//    44,
+//    128
+//    ]
+//    },
+//    "Token": "1234567890123456789012345678901234567890"
     
     func requestUrl () {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let session = URLSession.shared
-        let u = URL(string: "http://www.perdu.com")
+        let u = URL(string: "\(Constants.BASE_URL)api/login")
         var request = URLRequest(url: u!)
-        request.httpMethod = "GET"
-        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
-        request.httpBody = "{\"Hello\" : \"Hello\"}".data(using: .utf8)
+        var success = false
         
-        task = session.dataTask(with: request) {
-            (data, response, error) in
-            if let d = data {
-                print(String(data: d, encoding: .utf8))
-                if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
-                    // print(o["test"])
-                    print(o)
-                    
-                    let dataOut = try? JSONSerialization.data(withJSONObject: o, options: .prettyPrinted)
-                    
-                    // faire ici la requete avec entete de qr code + les beacons,
-                    // envoyer la reponse et changer selon le resultat la valeur de response_view.success.
-                    print("_________________________________________________________")
-                    print(dataOut)
-                    print("_________________________________________________________")
+        request.httpMethod = "POST"
+        request.setValue("Allow-Compression", forHTTPHeaderField: "true")
+        
+        let dateString = Formatter.iso8601.string(from: Date())
+        let date = Formatter.iso8601.date(from: dateString)
+        print(beaconsFound)
+    
+        request.httpBody = "QRCodeData=\(QRString ?? "")&date=\(date)&beaconCollection=[\(beaconsFound ?? [])]&token=\(appDelegate?.token ?? "")".data(using: .utf8)
+    
+    let task = session.dataTask(with: request) {
+        (data, response, error) in
+        if let d = data {
+            if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
+                if (o["response"] != nil) {
+                    success = o["response"]! == "OK"
+                    DispatchQueue.main.async { [unowned self] in
+                        self.requestCode(success: success)
+                        print("ça marche")
+                    }
+                } else {
+                    print("ça marche pas")
+                    return
                 }
             }
-            
-            print("merde")
-            print(response ?? "")
-            print("__________________--------------")
-            print(error ?? "")
         }
-        
-        task?.resume()
+    }
+    
+    task.resume()
     }
     
     fileprivate func startRanging () {
-        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "F2A74FC4-7625-44DB-9B08-CB7E130B2029")!, major: 65535, minor: 382, identifier: "premier")
-        
+//        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "F2A74FC4-7625-44DB-9B08-CB7E130B2029")!, major: 65535, minor: 382, identifier: "premier")
         manager.startRangingBeacons(in: beaconRegion)
     }
     
@@ -170,11 +214,12 @@ class QRViewController: UIViewController, CLLocationManagerDelegate {
         print(region.identifier)
         print(beacons)
         
-        beaconsFound = beacons
+        beaconsFound = []
         
         for b in beacons {
+            beaconsFound.append("\(b.minor)\(b.major)")
+
             print(b.minor)
-            print(b.accuracy)
         }
     }
     
@@ -191,40 +236,11 @@ class QRViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Helper methods
-    func launchApp(decodedURL: String) {
-        
-        if presentedViewController != nil {
-            return
-        }
-        
-        let alertPrompt = UIAlertController(title: "Open App", message: "You're going to open \(decodedURL)", preferredStyle: .actionSheet)
-        let confirmAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            
-            if let url = URL(string: decodedURL) {
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            }
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
-        alertPrompt.addAction(confirmAction)
-        alertPrompt.addAction(cancelAction)
-        
-        present(alertPrompt, animated: true, completion: nil)
-    }
-    
-}
-
-extension QRViewController: AVCaptureMetadataOutputObjectsDelegate {
-    
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         // Check if the metadataObjects array is not nil and it contains at least one object.
         if metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
-//            messageLabel.text = "No QR code is detected"
+            //            messageLabel.text = "No QR code is detected"
             print("No QR code is detected")
             return
         }
@@ -237,10 +253,17 @@ extension QRViewController: AVCaptureMetadataOutputObjectsDelegate {
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = barCodeObject!.bounds
             
-            if metadataObj.stringValue != nil {
-                launchApp(decodedURL: metadataObj.stringValue!)
+            if (metadataObj.stringValue != nil && firstTime == true) {
+                firstTime = false
+                
                 print(metadataObj.stringValue)
-//                messageLabel.text = metadataObj.stringValue
+                QRString = metadataObj.stringValue
+                manager.stopRangingBeacons(in: beaconRegion)
+                requestUrl()
+                firstTime = false
+                captureSession.stopRunning()
+                print("_______________________________________________________________")
+                //                messageLabel.text = metadataObj.stringValue
             }
         }
     }

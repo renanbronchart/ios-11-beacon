@@ -8,6 +8,6 @@
 
 import Foundation
 
-class Constants {
-    let BASE_URL = "https://d1a32b63.ngrok.io/"
+struct Constants {
+    static let BASE_URL = "http://ebe3687b.ngrok.io/"
 }
