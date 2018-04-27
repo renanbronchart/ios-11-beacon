@@ -70,10 +70,10 @@
             </objects>
             <point key="canvasLocation" x="944.79999999999995" y="-582.45877061469275"/>
         </scene>
-        <!--Code View Controller-->
+        <!--View Controller-->
         <scene sceneID="dbx-UZ-Zeg">
             <objects>
-                <viewController storyboardIdentifier="QRView" id="i1o-kW-H2B" customClass="QRCodeViewController" customModule="ios_beacon_presence" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="QRView" id="i1o-kW-H2B" customClass="QRViewController" customModule="ios_beacon_presence" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tmc-mU-n5f">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -86,33 +86,25 @@
                                     <action selector="logout:" destination="i1o-kW-H2B" eventType="touchUpInside" id="hOn-2y-CSM"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bTq-EM-5xv">
-                                <rect key="frame" x="16" y="205" width="343" height="319"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="En attente de la salle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqS-GW-tgf">
+                                <rect key="frame" x="108" y="68" width="159" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pas de QR code détecté" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYN-zf-OBd">
-                                        <rect key="frame" x="8" y="8" width="327" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izb-ty-NBG" customClass="AppButton" customModule="ios_beacon_presence" customModuleProvider="target">
-                                <rect key="frame" x="133" y="487" width="108" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izb-ty-NBG" customClass="AppButton" customModule="ios_beacon_presence" customModuleProvider="target">
+                                <rect key="frame" x="111" y="558" width="153" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Scann QR Code"/>
+                                <connections>
+                                    <action selector="scannCode:" destination="i1o-kW-H2B" eventType="touchUpInside" id="0jP-kY-H4E"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kIk-af-YdR"/>
                     </view>
-                    <connections>
-                        <outlet property="qrLabel" destination="TYN-zf-OBd" id="W6G-PZ-k89"/>
-                        <outlet property="scanView" destination="bTq-EM-5xv" id="LqT-9h-Ezr"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o1C-HU-VPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -160,6 +152,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TJO-Ln-e2d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3341.5999999999999" y="-581.55922038980509"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="kGP-dJ-Iaf">
+            <objects>
+                <viewController storyboardIdentifier="qr_view" id="Mi4-69-xOR" customClass="QRViewController" customModule="ios_beacon_presence" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tEy-9P-2B1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="UDP-8p-rzF"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bFq-1k-bqo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1719" y="165"/>
         </scene>
     </scenes>
 </document>

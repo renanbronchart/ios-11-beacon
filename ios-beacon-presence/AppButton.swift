@@ -21,6 +21,8 @@ class AppButton: UIButton {
         layer.borderWidth = 1
         layer.borderColor = UIColor(red: 44/255, green: 123/255, blue: 246/255, alpha: 0.8).cgColor
         layer.backgroundColor = UIColor(red: 44/255, green: 123/255, blue: 246/255, alpha: 0.8).cgColor
+        
+        
     }
     
 }

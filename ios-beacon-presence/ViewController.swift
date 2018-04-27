@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: "USERLOGGEDIN") == true {
             print("is already connected")
             // user is already logged so navigate to home qr code
-            if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRCodeViewController {
+            if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRViewController {
                 
                 
                 self.navigationController?.pushViewController(view_qr_code, animated: false)
