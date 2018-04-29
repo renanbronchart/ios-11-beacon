@@ -6,6 +6,9 @@
 //  Copyright © 2018 Renan Bronchart. All rights reserved.
 //
 //
+
+
+
 //
 // Inspiration source:
 // https://stackoverflow.com/questions/28338981/how-to-add-done-button-to-numpad-in-ios-8-using-swift
@@ -16,8 +19,9 @@
 import Foundation
 import UIKit
 
+
+// Add extension to text field, to add done button on tapbar, to hide keyboard
 extension UITextField{
-    
     @IBInspectable var doneAccessory: Bool{
         get{
             return self.doneAccessory

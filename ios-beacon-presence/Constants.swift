@@ -9,5 +9,6 @@
 import Foundation
 
 struct Constants {
-    static let BASE_URL = "http://ebe3687b.ngrok.io/"
+    // Add constants base url
+    static let BASE_URL = "https://7a1ae871.ngrok.io/"
 }

@@ -8,8 +8,8 @@
 
 import UIKit
 
+// Add danger button class to factor
 class DangerButton: UIButton {
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -21,8 +21,5 @@ class DangerButton: UIButton {
         layer.borderWidth = 1
         layer.borderColor = UIColor(red: 1, green: 59/255, blue: 48/255, alpha: 1).cgColor
         layer.backgroundColor = UIColor(red: 1, green: 59/255, blue: 48/255, alpha: 1).cgColor
-        
-        
     }
-    
 }
