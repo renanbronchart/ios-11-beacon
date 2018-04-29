@@ -15,6 +15,7 @@ class ResponseViewController: UIViewController {
     @IBOutlet weak var alertView: UIView!
     @IBOutlet weak var labelButton: UIButton!
     
+    // Declare behaviors and animation
     var animator:UIDynamicAnimator? = nil
     var animatorAlert:UIDynamicAnimator? = nil
     let gravity = UIGravityBehavior()
@@ -23,10 +24,15 @@ class ResponseViewController: UIViewController {
     // Alert function
     
     @IBAction func closeAlert(_ sender: Any) {
+        // close Alert function with animation
+        
+        // reference response view controller for animation
         animator = UIDynamicAnimator(referenceView: self.view)
-
+        
+        // Safety behaviors to remove all behaviors
         animator?.removeAllBehaviors()
-
+        
+        // add gravity to alert
         gravity.addItem(alertView)
 
         gravity.gravityDirection = CGVector(dx: 0.0, dy: 1.0)
@@ -36,11 +42,12 @@ class ResponseViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
 
-
+        // Add angular velocity behavior to alert view
         let itemBehaviour: UIDynamicItemBehavior = UIDynamicItemBehavior(items: [alertView])
         itemBehaviour.addAngularVelocity(CGFloat(Double.pi / 2), for: alertView)
         animator?.addBehavior(itemBehaviour)
-
+        
+        // animate overlay and alert opacity
         UIView.animate(withDuration: 0.4, animations: {
             self.alertView?.alpha = 0.0
             self.overlayView?.alpha = 0.0
@@ -52,6 +59,7 @@ class ResponseViewController: UIViewController {
     }
     
     func createOverlay() {
+        // Add overlay behind alert
         overlayView = UIView(frame: self.view.bounds)
         let layer = overlayView.layer
         
@@ -59,6 +67,7 @@ class ResponseViewController: UIViewController {
         
         self.view.insertSubview(overlayView, belowSubview: alertView)
         
+        // animate overlay opacity
         UIView.animate(withDuration: 0.3, animations: {
             layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6).cgColor
             
@@ -87,58 +96,35 @@ class ResponseViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // init gradient on response controller
         initGradient()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         createOverlay()
-
+        
+        // Change text if request is success or not
         if (success == false) {
             labelButton?.setTitle("Je rentente le coup", for: .normal)
         } else {
             labelButton?.setTitle("Yes", for: .normal)
         }
-//        var attachmentCounter: UIAttachmentBehavior!
-//        var push: UIPushBehavior!
+
         let layer = alertView.layer
 
         layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
         self.alertView?.alpha = 0.0
 
-//        animatorAlert = UIDynamicAnimator(referenceView: alertView)
-//        attachmentCounter = UIAttachmentBehavior(item: labelButton, attachedToAnchor: labelButton.center)
-//        attachmentCounter.damping = 0.3
-//        attachmentCounter.frequency = 100
-//        animatorAlert?.addBehavior(attachmentCounter)
-
         UIView.animate(withDuration: 0.4, animations: {
             self.alertView?.alpha = 1.0
         })
         
-        
-
+        // Add snap to center for alert view
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
             self.animator = UIDynamicAnimator(referenceView: self.view)
             self.snap = UISnapBehavior(item: self.alertView, snapTo: self.view.center)
             self.animator?.addBehavior(self.snap)
         })
-
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4, execute: {
-//            push = UIPushBehavior(items: [self.labelButton], mode: UIPushBehaviorMode.instantaneous)
-//            push.pushDirection = CGVector(dx: 0, dy: -1)
-//            self.animatorAlert?.addBehavior(self.snap)
-//        })
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

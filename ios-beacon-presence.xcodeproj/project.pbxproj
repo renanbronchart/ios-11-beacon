@@ -25,7 +25,6 @@
 		25D4F7832092622700FF6CF7 /* ios_beacon_presenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D4F7822092622700FF6CF7 /* ios_beacon_presenceUITests.swift */; };
 		25E5B4DE20926AF200B4EBD5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E5B4DD20926AF200B4EBD5 /* MapKit.framework */; };
 		25E5B4E020927C5000B4EBD5 /* ResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */; };
-		25E5B4E22092842C00B4EBD5 /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E5B4E12092842C00B4EBD5 /* RequestService.swift */; };
 		3F97069D209614BE00321810 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F97069C209614BD00321810 /* CryptoSwift.framework */; };
 		3F9706A02096188100321810 /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F97069C209614BD00321810 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -86,7 +85,6 @@
 		25D4F7842092622700FF6CF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25E5B4DD20926AF200B4EBD5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseViewController.swift; sourceTree = "<group>"; };
-		25E5B4E12092842C00B4EBD5 /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		3F97069C209614BD00321810 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -148,7 +146,6 @@
 				25D4F76B2092622700FF6CF7 /* LaunchScreen.storyboard */,
 				25D4F76E2092622700FF6CF7 /* Info.plist */,
 				25E5B4DF20927C5000B4EBD5 /* ResponseViewController.swift */,
-				25E5B4E12092842C00B4EBD5 /* RequestService.swift */,
 				2585FE7420930B78003DA399 /* AppButton.swift */,
 				2585FE7620931A93003DA399 /* QRViewController.swift */,
 				2585FE78209343AF003DA399 /* Constants.swift */,
@@ -330,7 +327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				25E5B4E020927C5000B4EBD5 /* ResponseViewController.swift in Sources */,
-				25E5B4E22092842C00B4EBD5 /* RequestService.swift in Sources */,
 				2585FE832093ACAC003DA399 /* AppGhostButton.swift in Sources */,
 				2585FE852093AD5C003DA399 /* helperGradient.swift in Sources */,
 				2585FE7720931A93003DA399 /* QRViewController.swift in Sources */,

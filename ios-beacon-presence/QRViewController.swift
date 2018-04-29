@@ -19,12 +19,16 @@ import CoreLocation
 
 class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMetadataOutputObjectsDelegate {
     let manager = CLLocationManager()
+    
+    // Reference beacons uuid to listen
     let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "F2A74FC4-7625-44DB-9B08-CB7E130B2029")!, identifier: "beacon-hetic")
+    // Initiate beacons list found
     var beaconsFound = [""]
     var task: URLSessionTask?
     var firstTime = true
     var QRString: String?
     
+    // Initiate Capture session for QR code with camera
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
@@ -32,11 +36,13 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
     @IBOutlet weak var labelClassroom: UILabel!
     @IBOutlet weak var logoutButton: DangerButton!
     
+    // Add function logout
     @IBAction func logout(_ sender: Any) {
         UserDefaults.standard.set(false, forKey: "USERLOGGEDIN")
         self.navigationController?.popToRootViewController(animated: true)
     }
     
+    // Add function logout
     func requestCode(success: Bool) {
         if let response_view = self.storyboard?.instantiateViewController(withIdentifier: "responseView") as? ResponseViewController {
             response_view.success = false

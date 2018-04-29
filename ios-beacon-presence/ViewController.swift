@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var buttonLabel: UIButton!
     
+    // Declare behaviors
     var animator:UIDynamicAnimator?
     var snap: UISnapBehavior!
     var snapEmail: UISnapBehavior!
@@ -23,48 +24,47 @@ class ViewController: UIViewController {
     var snapButton: UISnapBehavior!
     let gravity = UIGravityBehavior()
     let collider = UICollisionBehavior()
-    
-    var titleOriginX: CGFloat?
-    var titleOriginY: CGFloat?
-
 
     func deplaceLabel () {
+        // reference view controller for animation
         animator = UIDynamicAnimator(referenceView: self.view)
         
+        // Add vector on gravity
         gravity.gravityDirection = CGVector(dx: 0, dy: 1.0)
-        animator?.addBehavior(gravity)
         
+        // Add gravity behavior on animation view controller
         gravity.addItem(titleLabel)
-        
         gravity.addItem(passwordField)
         
-        
-        //adding the collision behavior
-        
+        // adding the collision behavior on multi items
         collider.addItem(titleLabel)
         collider.addItem(emailField)
         collider.addItem(passwordField)
         collider.addItem(buttonLabel)
         
-//        collider.translatesReferenceBoundsIntoBoundary = true
+        // Add collision and gravity behavior on animation view controller
         animator?.addBehavior(collider)
+        animator?.addBehavior(gravity)
     }
     
     @IBAction func logIn(_ sender: Any) {
-
         let session = URLSession.shared
         let u = URL(string: "\(Constants.BASE_URL)api/login")
         var request = URLRequest(url: u!)
-
+        
+        // Add waiting message
         DispatchQueue.main.async {
             self.titleLabel.text = "Connexion..."
         }
-
+        
         let email = emailField.text ?? ""
         let hashedPass = passwordField.text?.sha512() ?? ""
-
+        
+        // Add post method
         request.httpMethod = "POST"
+        // Allow gzip compression
         request.setValue("Allow-Compression", forHTTPHeaderField: "true")
+        // Add body for login request with hashed pass with sha512
         request.httpBody = "Email=\(email)&Password=\(hashedPass)".data(using: .utf8)
 
         let task = session.dataTask(with: request) {
@@ -72,17 +72,21 @@ class ViewController: UIViewController {
             if let d = data {
                 if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
                     if (o["token"] != nil) {
+                        // Add User defaults to registry app login
                         UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
                         if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRViewController {
+                            // Add animation on label and text field
                             self.deplaceLabel()
 
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                                // Navigate to next view
                                 self.navigationController?.pushViewController(view_qr_code, animated: true)
                             })
                         }
 
                         self.saveResultToAppDelegate(token: o["token"]!)
                     } else {
+                        // Add message error
                         DispatchQueue.main.async {
                             print(error ?? "No errors")
                             self.titleLabel.text = "Veuillez réessayer..."
@@ -91,6 +95,7 @@ class ViewController: UIViewController {
                     }
                 }
             } else {
+                // Add message error
                 DispatchQueue.main.async {
                     print(error ?? "No errors")
                     self.titleLabel.text = "Veuillez réessayer..."
@@ -147,11 +152,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
-        let frmTitleLabel: CGRect = titleLabel.frame
-        titleOriginX = frmTitleLabel.origin.x
-        titleOriginY = frmTitleLabel.origin.y
-
+        
+        
+        // If login user defaults is true, push to home view.
         if UserDefaults.standard.bool(forKey: "USERLOGGEDIN") == true {
             print("is already connected")
             // user is already logged so navigate to home qr code
@@ -165,6 +168,7 @@ class ViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        // init gradient to view controller
         initGradient()
     }
 
