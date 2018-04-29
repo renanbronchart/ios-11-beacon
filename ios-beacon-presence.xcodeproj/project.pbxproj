@@ -13,7 +13,6 @@
 		2585FE79209343AF003DA399 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE78209343AF003DA399 /* Constants.swift */; };
 		2585FE7B20936F18003DA399 /* helperDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE7A20936F18003DA399 /* helperDateFormatter.swift */; };
 		2585FE832093ACAC003DA399 /* AppGhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE822093ACAC003DA399 /* AppGhostButton.swift */; };
-		2585FE852093AD5C003DA399 /* helperGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE842093AD5C003DA399 /* helperGradient.swift */; };
 		2585FE872093B033003DA399 /* DangerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE862093B033003DA399 /* DangerButton.swift */; };
 		2585FE892093B1C7003DA399 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE882093B1C7003DA399 /* ViewExtension.swift */; };
 		25D4F7632092622600FF6CF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D4F7622092622600FF6CF7 /* AppDelegate.swift */; };
@@ -67,7 +66,6 @@
 		2585FE78209343AF003DA399 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2585FE7A20936F18003DA399 /* helperDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helperDateFormatter.swift; sourceTree = "<group>"; };
 		2585FE822093ACAC003DA399 /* AppGhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGhostButton.swift; sourceTree = "<group>"; };
-		2585FE842093AD5C003DA399 /* helperGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helperGradient.swift; sourceTree = "<group>"; };
 		2585FE862093B033003DA399 /* DangerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DangerButton.swift; sourceTree = "<group>"; };
 		2585FE882093B1C7003DA399 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		25D4F75F2092622600FF6CF7 /* ios-beacon-presence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-beacon-presence.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +149,6 @@
 				2585FE78209343AF003DA399 /* Constants.swift */,
 				2585FE7A20936F18003DA399 /* helperDateFormatter.swift */,
 				2585FE822093ACAC003DA399 /* AppGhostButton.swift */,
-				2585FE842093AD5C003DA399 /* helperGradient.swift */,
 				2585FE862093B033003DA399 /* DangerButton.swift */,
 				2585FE882093B1C7003DA399 /* ViewExtension.swift */,
 				253F68C82093C0E100E1604F /* TextFielExtension.swift */,
@@ -328,7 +325,6 @@
 			files = (
 				25E5B4E020927C5000B4EBD5 /* ResponseViewController.swift in Sources */,
 				2585FE832093ACAC003DA399 /* AppGhostButton.swift in Sources */,
-				2585FE852093AD5C003DA399 /* helperGradient.swift in Sources */,
 				2585FE7720931A93003DA399 /* QRViewController.swift in Sources */,
 				2585FE872093B033003DA399 /* DangerButton.swift in Sources */,
 				2585FE7520930B78003DA399 /* AppButton.swift in Sources */,

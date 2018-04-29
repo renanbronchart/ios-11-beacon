@@ -47,6 +47,12 @@ class ViewController: UIViewController {
         animator?.addBehavior(gravity)
     }
     
+    
+    /////////////
+    /////////////
+    // if login API doesn't work, hidden request code and hide comments on DEV Mode
+    /////////////
+    /////////////
     @IBAction func logIn(_ sender: Any) {
         let session = URLSession.shared
         let u = URL(string: "\(Constants.BASE_URL)api/login")

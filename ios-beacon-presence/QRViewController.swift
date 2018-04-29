@@ -7,6 +7,8 @@
 //
 
 
+
+
 //
 // Inspiration source:
 // https://stackoverflow.com/questions/48576959/qr-code-scanner-wont-work-in-swift-4
@@ -50,10 +52,18 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
         }
     }
     
+    //
+    // Button action for DEV environment
+    //
     @IBAction func scanQRCode(_ sender: Any) {
         requestCode(success: true)
     }
+    //
+    // Button action for DEV environment
+    //
     
+    
+    // Add support code types for capture media video
     private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
                                       AVMetadataObject.ObjectType.code39,
                                       AVMetadataObject.ObjectType.code39Mod43,
@@ -74,25 +84,29 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         DispatchQueue.main.async {
             self.labelClassroom.text = appDelegate?.location
         }
         
+        // Hide navigation Bar, to not return to login
         self.navigationController?.isNavigationBarHidden = true
         
         manager.delegate = self
         
         if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            // Ask to authorization to listen beacons
             manager.requestWhenInUseAuthorization()
         } else {
+            // Start ranging and listen beacons if authorize
             startRanging()
         }
 
         // Get the back-facing camera for capturing videos
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
         
+        // If camera device not working, print error message and return
         guard let captureDevice = deviceDiscoverySession.devices.first else {
             print("Failed to get the camera device")
             return
@@ -112,7 +126,6 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
             // Set delegate and use the default dispatch queue to execute the call back
             captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             captureMetadataOutput.metadataObjectTypes = supportedCodeTypes
-            //            captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
             
         } catch {
             // If any error occurs, simply print it out and don't continue any more.
@@ -144,18 +157,6 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
             view.bringSubview(toFront: logoutButton)
         }
     }
-    
-//
-//    "QRCodeData" : "OK",
-//    "date": "",
-//    "beaconCollection":
-//    [
-//    12,
-//    44,
-//    128
-//    ]
-//    },
-//    "Token": "1234567890123456789012345678901234567890"
     
     func requestUrl () {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -199,26 +200,24 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
         manager.startRangingBeacons(in: beaconRegion)
     }
     
+    // Add location manager when beacons are founds
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        print(region.identifier)
         print(beacons)
         
         beaconsFound = []
         
+        // Add beacons found in array Beacons found
         for b in beacons {
             beaconsFound.append("\(b.minor)\(b.major)")
-
-            print(b.minor)
         }
     }
     
+    // If autorization to listen beacons change, start range
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             startRanging()
         }
     }
-    
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -242,17 +241,13 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = barCodeObject!.bounds
             
+            // If Qr code is present and beacons are founds, stop capture and request beacons with url.
             if (metadataObj.stringValue != nil && firstTime == true) {
                 firstTime = false
-                
-                print(metadataObj.stringValue)
                 QRString = metadataObj.stringValue
                 manager.stopRangingBeacons(in: beaconRegion)
                 requestUrl()
-                firstTime = false
                 captureSession.stopRunning()
-                print("_______________________________________________________________")
-                //                messageLabel.text = metadataObj.stringValue
             }
         }
     }
