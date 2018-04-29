@@ -57,24 +57,36 @@ class ViewController: UIViewController {
         var request = URLRequest(url: u!)
 
         DispatchQueue.main.async {
-            self.titleLabel.text = "Tentative de connexion..."
+            self.titleLabel.text = "Connexion..."
         }
 
-        let email = emailField.text
-        let hashedPass = passwordField.text?.sha512()
+        let email = emailField.text ?? ""
+        let hashedPass = passwordField.text?.sha512() ?? ""
 
         request.httpMethod = "POST"
         request.setValue("Allow-Compression", forHTTPHeaderField: "true")
-        request.httpBody = "Email=\(email!)&Password=\(hashedPass!)".data(using: .utf8)
+        request.httpBody = "Email=\(email)&Password=\(hashedPass)".data(using: .utf8)
 
         let task = session.dataTask(with: request) {
             (data, response, error) in
             if let d = data {
                 if let o = (try? JSONSerialization.jsonObject(with: d, options: [])) as? [String:String] {
                     if (o["token"] != nil) {
-                        UserDefaults.standard.set(true, forKey: o["token"]!)
-                        self.saveResultToAppDelegate(token: o["token"]!, session: session)
+                        UserDefaults.standard.set(true, forKey: "USERLOGGEDIN")
+                        if let view_qr_code = self.storyboard?.instantiateViewController(withIdentifier: "QRView") as? QRViewController {
+                            self.deplaceLabel()
+
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                                self.navigationController?.pushViewController(view_qr_code, animated: true)
+                            })
+                        }
+
+                        self.saveResultToAppDelegate(token: o["token"]!)
                     } else {
+                        DispatchQueue.main.async {
+                            print(error ?? "No errors")
+                            self.titleLabel.text = "Veuillez réessayer..."
+                        }
                         return
                     }
                 }
@@ -106,13 +118,14 @@ class ViewController: UIViewController {
 //        ////////// DEV MODE To bypass login API //////////
     }
 
-    func saveResultToAppDelegate(token: String!, session: URLSession! ) {
+    func saveResultToAppDelegate(token: String!) {
+        let session = URLSession.shared
         let u = URL(string: "\(Constants.BASE_URL)api/getLocation")
         var request = URLRequest(url: u!)
 
         request.httpMethod = "GET"
         request.setValue("Allow-Compression", forHTTPHeaderField: "true")
-        request.httpBody = "token=\(token)".data(using: .utf8)
+        request.httpBody = "Token=\(token)".data(using: .utf8)
 
         session.dataTask(with: request) {
             (data, response, error) in

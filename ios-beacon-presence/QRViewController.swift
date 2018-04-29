@@ -68,6 +68,11 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        DispatchQueue.main.async {
+            self.labelClassroom.text = appDelegate?.location
+        }
         
         self.navigationController?.isNavigationBarHidden = true
         

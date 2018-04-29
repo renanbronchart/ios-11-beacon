@@ -78,7 +78,7 @@
                                 <rect key="frame" x="74" y="678" width="227" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="4C6-pg-aQa"/>
-                                    <constraint firstAttribute="height" constant="80" id="F0W-Gl-kMS"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="891-nK-d7q"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
