@@ -160,7 +160,7 @@ class QRViewController: UIViewController, CLLocationManagerDelegate, AVCaptureMe
         let date = Formatter.iso8601.date(from: dateString)
         print(beaconsFound)
     
-        request.httpBody = "QRCodeData=\(QRString ?? "")&date=\(date)&beaconCollection=[\(beaconsFound ?? [])]&token=\(appDelegate?.token ?? "")".data(using: .utf8)
+        request.httpBody = "QRCodeData=\(QRString ?? "")&Date=\(date)&beaconCollection=[\(beaconsFound ?? [])]&Token=\(appDelegate?.token ?? "")".data(using: .utf8)
     
     let task = session.dataTask(with: request) {
         (data, response, error) in
